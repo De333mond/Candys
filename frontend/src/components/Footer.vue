@@ -50,8 +50,10 @@ export default {
 
 <style>
 .footer {
+  width: 100%;
   background-color: #F4D0A8;
   padding: 10px 10%;
+  box-sizing: border-box;
   text-align: center;
   display: flex;
   flex-wrap: wrap;
@@ -62,22 +64,19 @@ export default {
   width: 80%;
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: stretch;
 }
 
 .column {
-  padding: 20px;
+  padding: 0 20px;
   width: 80%;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
-  justify-content: space-around;
 }
 
-.column.full-width {
-  width: 100%;
-}
 
 h2 {
   font-size: 22px;

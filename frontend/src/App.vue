@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import "./style.css";
 
 export default {
   name: 'App',
@@ -22,7 +23,6 @@ export default {
     src: local("Montserrat"),
     url(./assets/fonts/Montserrat/Montserrat-Regular.ttf) format("truetype");
   }
-
 
 
   body {

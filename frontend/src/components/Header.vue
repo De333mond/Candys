@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import CandysNavlink from "@/components/Navlink";
+import CandysNavlink from "@/components/UI/Navlink";
 export default {
   name: "CandysHeader",
   components: {CandysNavlink}
@@ -28,6 +28,7 @@ export default {
 
 <style scoped>
   .header-wrapper {
+    width: 100%;
     display: flex;
     box-sizing: border-box;
     flex-direction: row;
@@ -62,11 +63,10 @@ export default {
     width: 64px;
   }
 
-
-
   img {
     height: 100%;
     width: 100%;
   }
 
+  @media {}
 </style>

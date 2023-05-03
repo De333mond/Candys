@@ -20,6 +20,9 @@ class FillingSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
+class CarouselSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Carousele
+        fields = "__all__"
 
 

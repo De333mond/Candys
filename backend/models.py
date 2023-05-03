@@ -80,6 +80,7 @@ class Product(models.Model):
     title = models.CharField(max_length=128, blank=False, null=False)
     description = models.TextField(blank=False, null=False)
     price = models.FloatField(default=0)
+    oldPrice = models.FloatField(default=0) 
     image = models.ImageField(upload_to="back/img/products")
     adv_state = models.CharField(max_length=4, choices=adv_choices, default="no")
 
@@ -88,6 +89,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+    
+
+class Carousele(models.Model):
+    image = models.ImageField(upload_to="back/img/slides")
 
 
 

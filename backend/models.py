@@ -1,6 +1,8 @@
 from django.db import models
 
 # Create your models here.
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 
 
 class User(models.Model):
@@ -69,16 +71,25 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    adv_choices = (
+        ("no", "Нет"),
+        ("sale", "Акция"),
+        ("new", "Новинка"),
+    )
+
     title = models.CharField(max_length=128, blank=False, null=False)
     description = models.TextField(blank=False, null=False)
     price = models.FloatField(default=0)
     image = models.ImageField(upload_to="back/img/products")
+    adv_state = models.CharField(max_length=4, choices=adv_choices, default="no")
 
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     available_fillings = models.ManyToManyField(Filling)
 
     def __str__(self):
         return self.title
+
+
 
 
 

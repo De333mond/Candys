@@ -9,7 +9,9 @@ class OrderHasProductInline(admin.TabularInline):
 # Register your models here.
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = [f.name for f in Product._meta.fields]
+    list_display = ['id', 'title', "price", 'adv_state', "category"]
+    list_filter = ["category"]
+
 
 
 @admin.register(Order)

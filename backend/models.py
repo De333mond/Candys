@@ -84,7 +84,7 @@ class Product(models.Model):
     adv_state = models.CharField(max_length=4, choices=adv_choices, default="no")
 
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    available_fillings = models.ManyToManyField(Filling)
+    available_fillings = models.ManyToManyField(Filling, blank=True)
 
     def __str__(self):
         return self.title

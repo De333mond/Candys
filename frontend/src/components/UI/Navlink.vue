@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <a class="navlink" :href="to">{{ content }}</a>
+    <a class="navlink">{{ content }}</a>
   </nav>
 </template>
 
@@ -8,7 +8,6 @@
 export default {
   name: "CandysNavlink",
   props: {
-    to: String,
     content: String,
   }
 }

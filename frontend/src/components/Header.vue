@@ -1,14 +1,14 @@
 <template>
   <div class="header-wrapper">
-    <div class="logo-wrapper">
+    <div class="logo-wrapper" @click="$router.push({name: 'home'})">
       <img class="logo-icon-img" src="../assets/images/icons/logo-icon.png">
       <img class="logo-title-img" src="../assets/images/icons/logo-title.png">
     </div>
     <div class="navbar-wrapper">
-      <CandysNavlink class="nav-link" to="#" content="Акции"/>
-      <CandysNavlink class="nav-link" to="#" content="Каталог"/>
-      <CandysNavlink class="nav-link" to="#" content="На заказ"/>
-      <CandysNavlink class="nav-link" to="#" content="О нас"/>
+      <CandysNavlink class="nav-link" content="Акции"/>
+      <CandysNavlink class="nav-link" @click="$router.push('products')" content="Каталог"/>
+      <CandysNavlink class="nav-link" @click="$router.push('custom')" content="На заказ"/>
+      <CandysNavlink class="nav-link" @click='$router.push("about-us")' content="О нас"/>
     </div>
     <div class="ico-buttons-wrapper">
       <img src="../assets/images/icons/basket.png" alt="">

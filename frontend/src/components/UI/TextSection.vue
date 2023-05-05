@@ -1,6 +1,6 @@
 <template>
-  <div class="about-us-container">
-    <p class="about-us-text">
+  <div class="text-section-wrapper fl">
+    <p class="text-section-p">
       <slot></slot>
     </p>
   </div>
@@ -13,13 +13,17 @@ export default {
 </script>
 
 <style scoped>
-  .about-us-text {
+  .text-section-p {
     font-family: Nunito;
     font-size: 24px;
+    margin: 0;
   }
 
-  .about-us-container {
-    width: 80%;
-    margin: 0 10%;
+  .text-section-wrapper {
+    width: 100%;
+    padding: 15px;
+    box-sizing: border-box;
   }
+
+
 </style>

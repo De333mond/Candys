@@ -36,8 +36,7 @@ export default {
 
 <style scoped>
   .category-container {
-    width: 80%;
-    margin: 0 10%;
+    width: 100%;
     justify-content: space-between;
     text-align: center;
   }

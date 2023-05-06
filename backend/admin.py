@@ -17,6 +17,10 @@ def markOnSale(modeladmin, request, queryset):
     queryset.update(adv_state='sale')
 
 
+@admin.action(description="Set products on new")
+def markOnSale(modeladmin, request, queryset):
+    queryset.update(adv_state='new')
+
 """
 ---Admin models---
 """

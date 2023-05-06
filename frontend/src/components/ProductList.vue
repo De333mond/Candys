@@ -30,8 +30,6 @@ export default {
 
 <style scoped>
   .list-wrapper {
-    width: 80%;
-    margin: 0 10%;
     flex-wrap: wrap;
     justify-content: flex-start;
     gap: 70px 20px;

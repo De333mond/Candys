@@ -1,6 +1,6 @@
 <template>
   <div class="product-container">
-    <div class="image-container">
+    <div class="image-container" @click="$router.push('/item/' + item.id)">
       <img :src="item.image" alt="">
       <div v-if="isNotStandard" class="adv-title-container">
         <p v-if="isNotStandard" class="product-type-title">{{ advTitle }}</p>
@@ -12,7 +12,7 @@
           <span :class="{sale: isOnSaleWithoutError}">{{ item.price }} P </span>
           <sup v-if='isOnSaleWithoutError' class="old-price">{{ item.oldPrice}}</sup>
         </p>
-        <MyButton>В корзину</MyButton>
+        <MyButton @click="addToCourt">В корзину</MyButton>
       </div>
   </div>
 </template>
@@ -56,7 +56,14 @@ export default {
 
 
   methods: {
-
+    addToCourt() {
+      let additionalInfo = {
+        title: null,
+        fillingId: null,
+        quantity: 1
+      }
+      this.$store.dispatch("CourtModule/addItem", {item: this.item, additionalInfo})
+    }
   }
 
 }

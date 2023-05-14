@@ -1,6 +1,6 @@
 <template>
   <div class="product-page-content fl f-row">
-    <ProductListFilter @changed="onFilterChanged"/>
+    <ProductListFilter @changed="onFilterChanged" :filter="this.$route.query.filter"/>
     <div class="product-list-wrapper">
       <ProductList :products="sortedProducts"/>
     </div>
@@ -9,15 +9,17 @@
 
 <script>
 import ProductList from "@/components/ProductList";
-import axios from "axios";
 import ProductListFilter from "@/components/ProductListFilter";
+import {mapState} from "vuex";
 export default {
   name: "ProductsPage",
   components: {ProductListFilter, ProductList},
   data() {
     return {
-      products: [],
-      filterConfig: null,
+      filterConfig: {
+        category: null,
+        order: null,
+      },
     }
   },
 
@@ -28,6 +30,9 @@ export default {
   },
 
   computed: {
+    ...mapState("ProductsModule",[
+        "products",
+    ]),
     sortedProducts: function() {
       function compare(a, b) {
         switch (this.order){
@@ -48,10 +53,15 @@ export default {
         }
       }
       let sortFunc = compare.bind(this.filterConfig)
-      if (this.filterConfig !== null)
+      if (this.filterConfig.category  !== null) {
         return this.products
-            .filter(item => {return this.filterConfig.category.id === 0 || this.filterConfig.category.id === item.category})
+            .filter(item => {
+              return this.filterConfig.category.id === 0 ||
+              this.filterConfig.category.id ===
+              item.category.id
+            })
             .sort(sortFunc)
+      }
       else
         return this.products
 
@@ -59,13 +69,7 @@ export default {
   },
 
   mounted() {
-    axios.get('http://127.0.0.1:8000/api/products/')
-      .then(response => {
-        this.products = response.data;
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.$store.dispatch("ProductsModule/fetchProducts");
   },
 }
 </script>

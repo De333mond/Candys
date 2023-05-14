@@ -1,6 +1,6 @@
 <template>
   <div class="list-wrapper fl">
-      <ProductCard
+    <ProductCard
           v-for="(item, index) in products"
           :key="index"
           :item="item"

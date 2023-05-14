@@ -3,8 +3,12 @@ from .serializers import *
 from rest_framework import viewsets
 from rest_framework.decorators import action  
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
 
-class ProductViewSet(viewsets.ModelViewSet):
+
+
+class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -37,3 +41,21 @@ class FillingViewSet(viewsets.ReadOnlyModelViewSet):
 class CarouselViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Carousele.objects.all()
     serializer_class = CarouselSerializer
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset= User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    # authentication_classes = [SessionAuthentication]
+
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    # permission_classes = [IsAuthenticated]
+
+class OrderHasProductViewSet(viewsets.ModelViewSet):
+    queryset =OrderHasProduct.objects.all() 
+    serializer_class = OrderHasProductSerializer
+

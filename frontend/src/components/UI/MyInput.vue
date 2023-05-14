@@ -8,6 +8,7 @@
         :value="modelValue"
         :placeholder="placeholder"
         @input="$emit('update:modelValue', $event.target.value)"
+        :class="{'input-error': error}"
     >
   </div>
 </template>
@@ -19,7 +20,8 @@ export default {
     modelValue: {type: String, default: null},
     label: {type: String, default: ""},
     placeholder: {type: String, default: ""},
-    type: {type: String, default: "text"}
+    type: {type: String, default: "text"},
+    error: {type: Boolean, default: false}
   }
 }
 </script>
@@ -48,6 +50,12 @@ export default {
   .ui-input-wrapper {
     width: 100%;
     margin: 20px 0;
+  }
+
+  .input-error {
+    color: red;
+    box-shadow: red;
+    border: 2px solid red;
   }
 
 

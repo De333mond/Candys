@@ -3,7 +3,7 @@
     <h1>Торты и десесерты с доставкой</h1>
     <ImageSlider style="width: 100vw"/>
     <h1>Акции</h1>
-    <ProductList :products="products"/>
+    <ProductList :products="onSaleLimited"/>
     <h1>Категории</h1>
     <CategoryList/>
     <h1>О нас</h1>
@@ -16,26 +16,24 @@
 <script>
 import ProductList from "@/components/ProductList";
 import ImageSlider from "@/components/UI/ImageSlider";
-import axios from "axios";
 import CategoryList from "@/components/CategoryList";
 import TextSection from "@/components/UI/TextSection";
+import {mapGetters} from "vuex";
 export default {
   name: "MainPage",
   components: {TextSection, CategoryList, ImageSlider, ProductList},
-  data() {
-    return {
-      products: []
-    }
+  computed: {
+    ...mapGetters('ProductsModule', [
+      "getOnSale",
+    ]),
+    onSaleLimited() {
+      return this.getOnSale.filter((el, i) => i < 8);
+    },
   },
 
   mounted() {
-    axios.get('http://127.0.0.1:8000/api/products/on_sale/?limit=8')
-        .then(response => {
-          this.products = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
+    console.log(this.getOnSale, this.getOnSale == null)
+    this.$store.dispatch("ProductsModule/fetchProducts")
   }
 }
 </script>

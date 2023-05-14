@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db.models.signals import pre_save
 from django.dispatch import receiver
-
+from django.contrib.auth.models import AbstractUser
 
 class User(models.Model):
     email = models.EmailField()
@@ -16,10 +16,12 @@ class User(models.Model):
 
 
 class OrderHasProduct(models.Model):
-    product = models.ForeignKey("Product", on_delete=models.DO_NOTHING)
+    product = models.ForeignKey("Product", on_delete=models.DO_NOTHING, related_name="order_product")
     order = models.ForeignKey("Order", on_delete=models.DO_NOTHING)
     count = models.IntegerField()
-    filling = models.ForeignKey("Filling", on_delete=models.DO_NOTHING)
+    filling = models.ForeignKey("Filling", on_delete=models.DO_NOTHING, default=0)
+    title = models.CharField(max_length=255, blank=True)
+
 
 
 class Order(models.Model):

@@ -5,24 +5,35 @@
       <img class="logo-title-img" src="../assets/images/icons/logo-title.png">
     </div>
     <div class="navbar-wrapper">
-      <CandysNavlink class="nav-link" content="Акции"/>
-      <CandysNavlink class="nav-link" @click="$router.push('products')" content="Каталог"/>
-      <CandysNavlink class="nav-link" @click="$router.push('custom')" content="На заказ"/>
-      <CandysNavlink class="nav-link" @click='$router.push("about-us")' content="О нас"/>
+      <CandysNavlink class="nav-link" @click="$router.push('/products/?filter=sale')" content="Акции"/>
+      <CandysNavlink class="nav-link" @click="$router.push('/products')" content="Каталог"/>
+      <CandysNavlink class="nav-link" @click="$router.push('/custom')" content="На заказ"/>
+      <CandysNavlink class="nav-link" @click='$router.push("/about-us")' content="О нас"/>
     </div>
     <div class="ico-buttons-wrapper">
-      <img src="../assets/images/icons/basket.png" alt="">
-      <img src="../assets/images/icons/user.png" alt="">
+      <div class="court-wrapper">
+        <div class="court-items-count-wrapper">
+          {{ courtLength }}
+        </div>
+        <img src="../assets/images/icons/basket.png" alt="" @click="$router.push('/court')">
+      </div>
+      <img src="../assets/images/icons/user.png" alt="" @click="$router.push('/me')">
     </div>
   </div>
 </template>
 
 <script>
 import CandysNavlink from "@/components/UI/Navlink";
+import {mapGetters} from "vuex";
+
 export default {
   name: "CandysHeader",
-  components: {CandysNavlink}
-
+  components: {CandysNavlink},
+  computed: {
+    ...mapGetters("CourtModule",[
+      "courtLength",
+    ])
+  }
 }
 </script>
 
@@ -65,8 +76,24 @@ export default {
 
   img {
     height: 100%;
-    width: 100%;
+    width: 64px;
   }
 
-  @media {}
+  .court-wrapper {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    justify-content: end;
+  }
+
+  .court-items-count-wrapper {
+    position: absolute;
+    background-color: #EB5C54;
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    /*top: 64px;*/
+    /*left: 0;*/
+  }
+
 </style>

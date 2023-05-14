@@ -19,7 +19,7 @@ export default {
     border-radius: 1px;
     font-size: 16px;
     transition: 0.1s ease-in;
-    margin: 20px 0;
+    /*margin: 20px 0;*/
   }
 
   button:hover {

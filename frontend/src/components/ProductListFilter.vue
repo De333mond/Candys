@@ -91,6 +91,9 @@ export default {
     }
   },
 
+  props: {
+    filter: Object
+  },
   mounted() {
     axios.get("http://127.0.0.1:8000/api/categories/")
         .then(response => {
@@ -99,6 +102,7 @@ export default {
         }).catch(e => {
           console.log(e)
     })
+    this.config.order = this.filter
   }
 }
 </script>

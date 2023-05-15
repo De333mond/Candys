@@ -3,7 +3,7 @@
     <button class="counter-button" @click="dec">
       <img src="@/assets/images/icons/minus-icon.svg" alt="-">
     </button>
-    <input type="text" :value="count" @input="$emit('changed', $event.target.value)">
+    <input disabled type="text" :value="count" @input="$emit('changed', $event.target.value)">
     <button class="counter-button" @click="inc">
       <img src="@/assets/images/icons/plus-icon.svg" alt="+">
     </button>
@@ -16,13 +16,20 @@ export default {
 
   data() {
     return {
-      count: 1,
+      count: this.initial,
+    }
+  },
+
+  props: {
+    initial: {
+      type: Number,
+      default: 1,
     }
   },
 
   methods: {
     dec() {
-      if (this.count > 0) {
+      if (this.count > 1) {
         this.count -= 1;
         this.$emit('changed', this.count);
       }

@@ -31,7 +31,7 @@ export default {
   props: {
     item: {
       type: Object,
-      required: true,
+      require2d: true,
     },
   },
 
@@ -62,7 +62,7 @@ export default {
         fillingId: null,
         quantity: 1
       }
-      this.$store.dispatch("CourtModule/addItem", {item: this.item, additionalInfo})
+      this.$store.dispatch("CourtModule/addItem", {item: this.item.id, additionalInfo})
     }
   }
 

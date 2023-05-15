@@ -53,7 +53,7 @@ export default {
         }
       }
       let sortFunc = compare.bind(this.filterConfig)
-      if (this.filterConfig.category  !== null) {
+      if (this.filterConfig.category !== null) {
         return this.products
             .filter(item => {
               return this.filterConfig.category.id === 0 ||

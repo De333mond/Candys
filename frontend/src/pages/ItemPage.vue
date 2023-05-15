@@ -1,14 +1,14 @@
 <template>
   <div class="page-wrapper">
-    <div class="fl item-card-container">
+    <div v-if="isProductsFetched" class="fl item-card-container">
       <div class="fl item__image-wrapper">
         <img :src="item.image" class="item__image">
       </div>
       <div class="fl f-col item__information">
         <div class="item__information-wrapper">
           <h2>{{ item.title }}</h2>
-          <p>{{item.description}}</p>
-          <MyInput label="Добавить надпись на торт?" v-model="additionalInfo.title"/>
+          <p><span class="item-page__description">{{item.description}}</span></p>
+          <MyInput v-if="item.category.canHaveTitle" label="Добавить надпись на торт?" v-model="additionalInfo.title"/>
 
           <div v-if="hasFillings" class="fl f-col">
             <label for="select-filling">Выбрать начинку</label>
@@ -37,49 +37,43 @@
 </template>
 
 <script>
-import axios from "axios";
 import MyInput from "@/components/UI/MyInput";
 import MyButton from "@/components/UI/MyButton";
 import VCounter from "@/components/UI/v-counter";
 import ProductList from "@/components/ProductList";
+import {mapState} from "vuex";
 
 export default {
   name: "ItemPage",
   components: {ProductList, VCounter, MyButton, MyInput},
   data() {
     return {
-      item: {},
       additionalInfo: {
-        title: "",
+        title: '',
         quantity: 1,
         fillingId: -1,
       },
-      popularItems: [],
     }
   },
 
-  mounted() {
-    axios
-        .get(`http://localhost:8000/api/products/${this.$route.params.id}/`)
-        .then((response) => {
-          this.item = response.data
-        })
-        .catch((e) => {
-          if (e.response.status == 404)
-            this.$router.push({name: "404"})
-          else
-            console.error(e)
-      })
-    axios.get('http://127.0.0.1:8000/api/products/on_sale/?limit=4')
-        .then(response => {
-          this.popularItems = response.data;
-        })
-        .catch(error => {
-          console.log(error);
-        });
-  },
-
   computed: {
+    ...mapState("ProductsModule", [
+        "products",
+    ]),
+
+    item() {
+      return this.products.filter(el => el.id === Number(this.$route.params.id))[0]
+    },
+
+    popularItems() {
+      const limit = 4;
+      return this.products.filter((el, i) => i < limit)
+    },
+
+    isProductsFetched() {
+      return this.products.length > 0
+    },
+
     hasFillings() {
       try {
         return this.item.available_fillings.length > 0
@@ -103,9 +97,18 @@ export default {
     }
   },
 
+  beforeMount() {
+    this.$store.dispatch("ProductsModule/fetchProducts")
+    console.log(this.item.category)
+  },
+
   methods: {
     addToCourt() {
-      this.$store.dispatch("CourtModule/addItem", {item: this.item, additionalInfo: this.additionalInfo})
+      this.$store.dispatch("CourtModule/addItem", {item: this.item.id, additionalInfo: {
+          title: this.additionalInfo.title.length > 0 ? this.additionalInfo.title : null,
+          quantity: this.additionalInfo.quantity,
+          fillingId: this.additionalInfo.fillingId !== -1 ? this.additionalInfo.fillingId : null,
+        }})
     }
   },
 }
@@ -176,5 +179,8 @@ export default {
   .count-wrapper {
     align-items: center;
   }
-
+  .item-page__description {
+    font-family: Nunito;
+    font-size: 18px;
+  }
 </style>

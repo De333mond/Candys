@@ -1,38 +1,62 @@
 <template>
   <div class="page-wrapper">
-    <table class='court-table' v-if="isProductsFetched">
-      <tr>
-        <th></th>
-        <th>Название</th>
-        <th>Цена</th>
-        <th>Количество</th>
-        <th>Сумма</th>
-        <th></th>
-      </tr>
-      <ui-court-item
-          v-for="(courtItem, index) in courtItems"
-          :key="courtItem.item"
-          :products="products"
-          :court-item="courtItem"
-          :index="index"
-          @priceChanged="(value) => totalCourtPrice += value"
-      />
-      </table>
-    <div class="total-wrapper">
-      <hr>
-      <h3>Всего: {{ totalCourtPrice }}</h3>
+    <div class="court-content" v-if="courtLength > 0">
+      <table class='court-table' v-if="isProductsFetched">
+        <tr>
+          <th></th>
+          <th>Название</th>
+          <th>Цена</th>
+          <th>Количество</th>
+          <th>Сумма</th>
+          <th></th>
+        </tr>
+        <ui-court-item
+            v-for="(courtItem, index) in courtItems"
+            :key="courtItem.item"
+            :products="products"
+            :court-item="courtItem"
+            :index="index"
+            @priceChanged="(value) => totalCourtPrice += value"
+        />
+        </table>
+      <div class="total-wrapper">
+        <hr>
+        <h3>Всего: {{ totalCourtPrice }}</h3>
+      </div>
+      <my-button @click="$router.push('/order')">Перейти к оформлению</my-button>
     </div>
-    <my-button @click="$router.push('/order')">Перейти к оформлению</my-button>
+    <div v-else class="court-content">
+      <h1>Товаров пока что нет в корзине :(</h1>
+      <MyButton @click="$router.push({name: 'products'})">Перейти в каталог</MyButton>
+    </div>
   </div>
 </template>
 
 
 <script>
 import MyButton from "@/components/UI/MyButton";
-import {mapState} from "vuex";
+import {mapGetters, mapState} from "vuex";
 import UiCourtItem from "@/components/UI/ui-court-item";
 export default {
   name: "CourtPage",
+  computed: {
+    ...mapState('CourtModule', [
+      'courtItems'
+    ]),
+
+    ...mapGetters('CourtModule', [
+        "courtLength",
+    ]),
+
+    ...mapState('ProductsModule', [
+      "products"
+    ]),
+
+    isProductsFetched(){
+      return this.products.length > 0
+    }
+  },
+
   components: {UiCourtItem, MyButton},
 
   data() {
@@ -41,21 +65,8 @@ export default {
     }
   },
 
-  computed: {
-    ...mapState('CourtModule', [
-        'courtItems'
-    ]),
-
-    ...mapState('ProductsModule', [
-        "products"
-    ]),
-
-    isProductsFetched(){
-      return this.products.length > 0
-    }
-  },
-
   beforeMount() {
+    this.totalCourtPrice = 0;
     this.$store.dispatch('ProductsModule/fetchProducts')
   },
 }
@@ -80,6 +91,12 @@ export default {
     justify-content: left;
     width: 80%;
     margin: 0 10%;
+  }
+
+  .court-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
 </style>

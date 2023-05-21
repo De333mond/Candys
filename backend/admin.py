@@ -24,7 +24,7 @@ def markOnSale(modeladmin, request, queryset):
 """
 ---Admin models---
 """
-# Register your models here.
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', "price", 'adv_state', "category"]
@@ -42,10 +42,19 @@ class OrderAdmin(admin.ModelAdmin):
         return obj.get_full_price()
 
 
+@admin.register(Filling)
+class FillingAdmin(admin.ModelAdmin):
+    list_display = ["id", "title"]
+
+
+@admin.register(Customer)
+class Custromer(admin.ModelAdmin):
+    list_display = [f.name for f in Customer._meta.fields]
+    
+
 admin.site.register(Category)
-admin.site.register(Filling)
-admin.site.register(User)
 admin.site.register(Carousele)
+admin.site.register(OrderHasProduct)
 
 
 

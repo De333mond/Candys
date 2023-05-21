@@ -1,29 +1,30 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
-class User(models.Model):
-    email = models.EmailField()
-    firstname = models.CharField(max_length=32)
-    secondname = models.CharField(max_length=32)
-    thirdname = models.CharField(max_length=32)
+# class User(models.Model):
+#     email = models.EmailField()
+#     firstname = models.CharField(max_length=32)
+#     secondname = models.CharField(max_length=32)
+#     thirdname = models.CharField(max_length=32)
 
-    def __str__(self):
-        return f"{self.thirdname} {self.firstname[0]}. {self.secondname[0]}."
+#     def __str__(self):
+#         return f"{self.thirdname} {self.firstname[0]}. {self.secondname[0]}."
 
 
 class OrderHasProduct(models.Model):
-    product = models.ForeignKey("Product", on_delete=models.DO_NOTHING, related_name="order_product")
-    order = models.ForeignKey("Order", on_delete=models.DO_NOTHING)
+    product = models.ForeignKey("Product", on_delete=models.SET_NULL, related_name="order_product", null=True)
+    order = models.ForeignKey("Order", on_delete=models.CASCADE, null=True)
     count = models.IntegerField()
-    filling = models.ForeignKey("Filling", on_delete=models.DO_NOTHING, default=0)
+    filling = models.ForeignKey("Filling", on_delete=models.SET_NULL, default=0, blank=True, null=True) 
     title = models.CharField(max_length=255, blank=True)
 
 
 
 class Order(models.Model):
     delivery_address = models.CharField(max_length=255)
-    delivery_date = models.DateTimeField()
+    delivery_date = models.DateTimeField(blank=True)
     payments = (
         ("card", "Банковская карта"),
         ("money", "Наличные")
@@ -36,14 +37,21 @@ class Order(models.Model):
     payment = models.CharField(max_length=5, choices=payments)
     pickup = models.CharField(max_length=8, choices=pickups)
 
-    user = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField("Product", through=OrderHasProduct)
 
     def get_full_price(self):
         total = 0
         objs = OrderHasProduct.objects.filter(order_id=self.id)
         for item in objs:
-            total += (item.product.price + item.filling.price_delta) * item.count
+            item_price = item.product.price
+            if (item.filling):
+                item_price += item.filling.price_delta
+            
+            if (item.title != ""):
+                item_price += 200
+            
+            total += item_price * item.count
         return total
 
     def __str__(self):
@@ -95,6 +103,15 @@ class Carousele(models.Model):
     image = models.ImageField(upload_to="back/img/slides")
 
 
+class Customer(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    delivery_adress = models.CharField(max_length=255, blank=True, null=True)
+    get_emails = models.BooleanField()
+    birthdate = models.DateField(blank=True, null=True) 
+
+
+    def __str__(self) -> str:
+        return self.user.username
 
 
 

@@ -8,8 +8,9 @@
         :value="modelValue"
         :placeholder="placeholder"
         @input="$emit('update:modelValue', $event.target.value)"
-        :class="{'input-error': error}"
+        :class="{'invalid': error}"
     >
+    <small class="error-message" v-if="error">{{ errorMessage }}</small>
   </div>
 </template>
 
@@ -21,7 +22,8 @@ export default {
     label: {type: String, default: ""},
     placeholder: {type: String, default: ""},
     type: {type: String, default: "text"},
-    error: {type: Boolean, default: false}
+    error: {type: Boolean, default: false},
+    errorMessage: {type: String, default: "input error!"}
   }
 }
 </script>
@@ -49,15 +51,14 @@ export default {
 
   .ui-input-wrapper {
     width: 100%;
-    margin: 20px 0;
+    margin-top: 20px;
   }
 
-  .input-error {
+  .error-message {
+    font-family: Nunito;
     color: red;
-    box-shadow: red;
-    border: 2px solid red;
+    margin-top: 5px;
   }
-
 
 
 </style>

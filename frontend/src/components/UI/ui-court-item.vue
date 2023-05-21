@@ -132,13 +132,16 @@ export default {
 
   .delete-button {
     border: none;
+    border-radius: 3px;
     img {
+      margin-top: 5px;
       width: 24px;
     }
   }
 
   .court-item__title {
     max-width: 250px;
+
     display: flex;
     text-align: left;
   }

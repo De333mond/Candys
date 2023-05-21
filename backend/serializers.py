@@ -2,11 +2,6 @@ from rest_framework import serializers
 from .models import *
 
 
-class UserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = "__all__"
-
 
 class FillingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -41,9 +36,20 @@ class OrderHasProductSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    total_sum = serializers.FloatField(source="get_full_price")
     class Meta: 
         model = Order
-        fields = ["id", "delivery_address", "delivery_date", "payment", "pickup", "user", "products"]
-
+        fields = ["id", "delivery_address", "delivery_date", "payment", "pickup", "user",  "total_sum", "products",]
 
  
+class CustromerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ["delivery_adress", 'get_emails']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    customer = CustromerSerializer(many=False)
+    class Meta:
+        model = User
+        fields = ['id', 'first_name', "last_name", "email", "customer"]

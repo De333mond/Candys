@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-adw^97ym8dhp=ku%%3y+5r8g==zw4k7%(o#fr^da+$+v3q)4bq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -56,8 +56,17 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = DEBUG
+
+CORS_ORIGIN_WHITELIST=[
+    'http://localhost:8080',
+    'http://127.0.0.1:8080',
+    'http://localhost:8081',
+]
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8080',
+    'http://127.0.0.1:8080',
     'http://localhost:8081',
 ]
 
@@ -87,6 +96,13 @@ REST_FRAMEWORK = {
 
 WSGI_APPLICATION = 'Candys.wsgi.application'
 
+
+DJOSER = {
+    'SERIALIZERS': {
+        "user": "backend.serializers.UserSerializer",
+        "current_user": "backend.serializers.UserSerializer",
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

@@ -9,9 +9,8 @@ router.register("products", ProductViewSet)
 router.register('categories', CategoryViewSet)
 router.register("fillings", FillingViewSet)
 router.register("carousel", CarouselViewSet) 
-router.register("user", UserViewSet)
 router.register("orders", OrderViewSet)
-router.register("orderHasProducts", OrderHasProductViewSet)
+router.register("orderHasProducts", OrderHasProductViewSet),
 
 urlpatterns = [
     path('', include(router.urls)),

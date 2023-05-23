@@ -49,7 +49,7 @@ class CarouselViewSet(viewsets.ReadOnlyModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @action(methods=['GET'], detail=False)
     def by_user(self, request):
@@ -62,6 +62,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 class OrderHasProductViewSet(viewsets.ModelViewSet):
     queryset =OrderHasProduct.objects.all() 
     serializer_class = OrderHasProductSerializer
+    permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data, many=True)
@@ -71,6 +72,10 @@ class OrderHasProductViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
 
+class CustomerViewSet(viewsets.ModelViewSet):
+    queryset = Customer.objects.all()
+    serializer_class = CustromerSerializer
+    permission_classes = [IsAuthenticated]
 
 
 

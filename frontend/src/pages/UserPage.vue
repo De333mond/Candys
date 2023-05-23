@@ -16,6 +16,7 @@
             <label for="reсeive-emails" class="label-font">Получать Email с акциями</label>
           </div>
 
+          <my-input type="date" label="Дата рождения" v-model="form.birthdate"/>
           <my-input label="Адрес доставки" v-model="form.address"/>
           <div class="fl gap-3">
             <my-button type="submit">Сохранить</my-button>
@@ -48,6 +49,7 @@ export default {
         email: "",
         receiveEmails: false,
         address: "",
+        birthdate: null,
       },
     }
   },
@@ -69,7 +71,19 @@ export default {
     },
 
     onSubmit() {
-
+      this.$store.dispatch("AuthModule/updateUserInformation", {
+        customer: {
+          "delivery_adress": this.form.address,
+          "get_emails": this.form.receiveEmails,
+          "birthdate": this.form.birthdate,
+          "user": this.currentUser.id,
+        },
+        user: {
+          "first_name": this.form.first_name,
+          "last_name": this.form.last_name,
+          "email": this.form.email,
+        }
+      })
     }
   },
 
@@ -81,6 +95,18 @@ export default {
   currentUser() {
     if (!this.currentUser)
       return
+
+    this.form.email = this.currentUser.email
+    this.form.first_name = this.currentUser.first_name
+    this.form.last_name = this.currentUser.last_name
+
+    DefaultAPIInstance
+        .get("http://localhost:8000/api/customers/" + this.currentUser.customer + "/")
+        .then(resp => {
+          this.form.receiveEmails = resp.data.get_emails
+          this.form.address = resp.data.delivery_adress
+          this.form.birthdate = resp.data.birthdate
+        })
 
     DefaultAPIInstance
         .get("http://localhost:8000/api/orders/by_user/?id=" + this.currentUser.id)

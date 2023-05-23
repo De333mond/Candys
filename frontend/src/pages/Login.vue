@@ -1,9 +1,10 @@
 <template>
   <div class="login-form-wrapper">
-    <div class="form-container">
+    <div class="form-container fl gap-1 f-col">
       <my-input :error="hasError" v-model="username" label="Имя пользователя" type="text"/>
       <my-input :error="hasError" v-model="password" label="Пароль" type="password"/>
-      <my-button @click="onSubmit">Login</my-button>
+      <router-link class="text-link" to="/register">Нет аккаунта? Зарегистрироваться</router-link>
+      <my-button @click="onSubmit">Войти</my-button>
     </div>
   </div>
 </template>
@@ -50,7 +51,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
  .login-form-wrapper {
    width: 40%;
@@ -64,4 +65,10 @@ export default {
  .form-container {
    margin: 40px 30px;
  }
+ .text-link {
+   font-family: Nunito;
+   font-size: 14px;
+   color: #EB5C54;
+ }
+
 </style>

@@ -36,7 +36,7 @@ class OrderHasProductSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    total_sum = serializers.FloatField(source="get_full_price")
+    total_sum = serializers.FloatField(source="get_full_price", required=False)
     class Meta: 
         model = Order
         fields = ["id", "delivery_address", "delivery_date", "payment", "pickup", "user",  "total_sum", "products",]
@@ -45,11 +45,9 @@ class OrderSerializer(serializers.ModelSerializer):
 class CustromerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ["delivery_adress", 'get_emails']
-
-
+        fields = ["id", "delivery_adress","get_emails","birthdate","user",]
+        
 class UserSerializer(serializers.ModelSerializer):
-    customer = CustromerSerializer(many=False)
     class Meta:
         model = User
         fields = ['id', 'first_name', "last_name", "email", "customer"]

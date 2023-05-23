@@ -11,7 +11,7 @@ router.register("fillings", FillingViewSet)
 router.register("carousel", CarouselViewSet) 
 router.register("orders", OrderViewSet)
 router.register("orderHasProducts", OrderHasProductViewSet),
-
+router.register("customers", CustomerViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('auth/', include("djoser.urls")),

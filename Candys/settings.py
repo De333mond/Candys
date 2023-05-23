@@ -102,6 +102,7 @@ DJOSER = {
         "user": "backend.serializers.UserSerializer",
         "current_user": "backend.serializers.UserSerializer",
     },
+    "USER_CREATE_PASSWORD_RETYPE": True,
 }
 
 # Database

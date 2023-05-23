@@ -10,12 +10,7 @@ export default {
   props: {
     image: String
   },
-
-  mounted() {
-    console.log(this.image)
-  }
-
-
+  
 }
 </script>
 

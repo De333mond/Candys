@@ -53,6 +53,7 @@ import axios from "axios";
 import {mapGetters, mapState} from "vuex";
 import {formatDate} from "@/utils";
 import useVuelidate from "@vuelidate/core";
+import {DefaultAPIInstance} from "@/api";
 const { required, minLength} = require('vuelidate/lib/validators')
 
 export default {
@@ -66,7 +67,7 @@ export default {
   data() {
     return {
       orderData: {
-        delivery_address: "",
+        delivery_address: '',
         delivery_date: null,
         asFaster: true,
         comment: "",
@@ -88,6 +89,7 @@ export default {
     ...mapState("AuthModule", [
       'credentials',
       "currentUser",
+      'userInfo'
     ]),
     ...mapGetters("CourtModule", [
         "courtLength"
@@ -103,7 +105,14 @@ export default {
       if (this.v$.orderData.$invalid || this.courtLength === 0)
         return
 
-      axios.post('http://localhost:8000/api/orders/', {
+      let apiInstance = axios.create({
+        headers: {
+          "Authorization": "Token " + this.credentials.token,
+          "Content-Type": "application/json"
+        }
+      })
+
+      apiInstance.post('http://localhost:8000/api/orders/', {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Token " + this.credentials.token
@@ -115,6 +124,15 @@ export default {
         if (resp.status === 201)
           this.$router.push("/successful")
       }).catch(e => console.log(e))
+    }
+  },
+
+  watch: {
+    userInfo() {
+      console.log(this.userInfo)
+      if (this.userInfo !== null)
+        console.log(this.userInfo.delivery_adress)
+        this.orderData.delivery_address = this.userInfo.delivery_adress
     }
   },
 

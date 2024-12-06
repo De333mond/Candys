@@ -1,16 +1,14 @@
-from django.shortcuts import render
-from django.contrib.auth.models import User
+from rest_framework import viewsets
+
 from .serializers import *
-from rest_framework import viewsets, status
-from rest_framework.decorators import action  
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly, IsAdminUser
+
+from .serializers import *
 
 
-
-
-class ProductViewSet(viewsets.ReadOnlyModelViewSet):
+class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
 
@@ -35,15 +33,10 @@ class FillingViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Filling.objects.all()
     serializer_class = FillingSerializer
 
-# class CategoryAllApiView(ListAPIView):
-#     queryset = Category.objects.all()
-#     serializer_class = CategorySerializer
-
 
 class CarouselViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Carousele.objects.all()
     serializer_class = CarouselSerializer
-
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -54,13 +47,13 @@ class OrderViewSet(viewsets.ModelViewSet):
     @action(methods=['GET'], detail=False)
     def by_user(self, request):
         queryset = Order.objects.filter(user_id=request.GET.get('id'))
-    
+
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
-    
+
 
 class OrderHasProductViewSet(viewsets.ModelViewSet):
-    queryset =OrderHasProduct.objects.all() 
+    queryset = OrderHasProduct.objects.all()
     serializer_class = OrderHasProductSerializer
     permission_classes = [IsAuthenticated]
 
@@ -70,12 +63,9 @@ class OrderHasProductViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    
+
 
 class CustomerViewSet(viewsets.ModelViewSet):
     queryset = Customer.objects.all()
     serializer_class = CustromerSerializer
     permission_classes = [IsAuthenticated]
-
-
-

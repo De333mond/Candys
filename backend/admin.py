@@ -4,6 +4,8 @@ from .models import *
 """
 ---Inlines---
 """
+
+
 class OrderHasProductInline(admin.TabularInline):
     model = OrderHasProduct
 
@@ -11,6 +13,7 @@ class OrderHasProductInline(admin.TabularInline):
 """
 ---Actions---
 """
+
 
 @admin.action(description="Set products on sale")
 def markOnSale(modeladmin, request, queryset):
@@ -21,16 +24,17 @@ def markOnSale(modeladmin, request, queryset):
 def markOnSale(modeladmin, request, queryset):
     queryset.update(adv_state='new')
 
+
 """
 ---Admin models---
 """
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['id', 'title', "price", 'adv_state', "category"]
     list_filter = ["category"]
     actions = [markOnSale]
-
 
 
 @admin.register(Order)
@@ -50,11 +54,8 @@ class FillingAdmin(admin.ModelAdmin):
 @admin.register(Customer)
 class Custromer(admin.ModelAdmin):
     list_display = [f.name for f in Customer._meta.fields]
-    
+
 
 admin.site.register(Category)
 admin.site.register(Carousele)
 admin.site.register(OrderHasProduct)
-
-
-

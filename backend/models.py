@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -100,3 +102,38 @@ class Customer(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
+
+
+class UserValidation:
+    def is_valid(self, user: Customer) -> bool:
+        raise NotImplemented
+
+
+class BirthDateValidation(UserValidation):
+    def is_valid(self, user: Customer) -> bool:
+        if user.birthdate is None:
+           return False
+
+        today = date.today()
+        age = today.year - user.birthdate.year
+
+        if today.month < user.birthdate.month or (
+                today.month == user.birthdate.month and today.day < user.birthdate.day):
+            age -= 1
+        return 16 <= age <= 60
+
+
+class AddressValidation(UserValidation):
+    def is_valid(self, user: Customer) -> bool:
+        return user.delivery_adress is not None and user.delivery_adress != ''
+
+class UserValidator:
+    def __init__(self, user: Customer):
+        self.user = user
+        self.validations: list[UserValidation] = []
+
+    def add_validation(self, validation: UserValidation):
+        self.validations.append(validation)
+
+    def is_valid_user(self) -> bool:
+        return all([el.is_valid(self.user) for el in self.validations])

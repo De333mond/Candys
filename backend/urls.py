@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 router.register("products", ProductViewSet)
 # router.register("products/on-sale", ProductViewSet)
-router.register('categories', CategoryViewSet)
+# router.register('categories', CategoryViewSet)
 router.register("fillings", FillingViewSet)
 router.register("carousel", CarouselViewSet) 
 router.register("orders", OrderViewSet)
@@ -16,4 +16,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('auth/', include("djoser.urls")),
     path('auth/', include("djoser.urls.authtoken")),
+    path('categories/', CategoryView.as_view()),
+    path('categories/{int:category_id}', CategoryView.as_view()),
 ]
